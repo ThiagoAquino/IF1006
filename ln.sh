@@ -93,4 +93,28 @@ cd DEV/
 #echo "Executando todo o script"
 mvn clean install
 
+
+
+
+
+pacote=$(dpkg --get-selections | grep "sonar")
+if [ -n "$pacote" ]
+	then
+		echo "O Sonar já está instalado"
+	else
+		echo "Instalando o Sonar..."
+		sudo sh -c "echo 'deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/' >> /etc/apt/sources.list"
+		sudo apt-get update
+		sudo apt-get install sonar
+fi
+
+#echo "Indo para a pasta DEV"
+cd DEV/
+
+#echo "Executando todo o script"
+mvn clean install
+
+#echo "Executando o Sonar"
+mvn sonar:sonar
+
 echo "Instalação Concluida"
