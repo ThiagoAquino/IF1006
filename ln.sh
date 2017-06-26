@@ -87,15 +87,6 @@ if [ -n "$pacote" ];
 		sudo apt-get install junit
 fi
 
-#echo "Indo para a pasta DEV"
-cd DEV/
-
-#echo "Executando todo o script"
-mvn clean install
-
-
-
-
 
 pacote=$(dpkg --get-selections | grep "sonar")
 if [ -n "$pacote" ]
