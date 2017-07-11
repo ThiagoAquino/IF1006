@@ -113,4 +113,13 @@ if [ -n "$pacote" ]
 		choco install sonarcube-scanner
 fi
 
+pacote=$(command -v docker)
+if [ -n "$pacote" ]
+	then
+		echo "O Docker já está instalado"
+	else
+		echo "Instalando o Docker..."
+		choco install docker
+fi
+
 echo "Instalação Concluida"
