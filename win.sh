@@ -87,15 +87,16 @@ if [ -n "$pacote" ];
 		choco install maven
 fi
 
+#### JUnit não possui pacote disponível no Chocolatey. Não encontramos um equivalente válido. 
 #echo "Checando se o junit está instalado"
-pacote=$(command -v junit)
-if [ -n "$pacote" ];
-	then
-		echo "O JUnit já está instalado"
-	else
-		echo "Instalando o Junit"
-		#choco install junit #Chocolatey não tem instalador pro junit ainda...
-fi
+# pacote=$(command -v junit)
+# if [ -n "$pacote" ];
+# 	then
+# 		echo "O JUnit já está instalado"
+# 	else
+# 		echo "Instalando o Junit"
+# 		#choco install junit #Chocolatey não tem instalador pro junit ainda...
+# fi
 
 #echo "Indo para a pasta DEV"
 cd DEV/
@@ -109,17 +110,26 @@ if [ -n "$pacote" ]
 		echo "O Sonar já está instalado"
 	else
 		echo "Instalando o Sonar..."
-		sh -c "echo 'deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/' >> /etc/apt/sources.list"
 		choco install sonarcube-scanner
 fi
 
-pacote=$(command -v docker)
+#echo "Executando instalação do mysql"
+pacote=$(command -v mysql)
 if [ -n "$pacote" ]
 	then
-		echo "O Docker já está instalado"
+		echo "O MySQL já está instalado"
 	else
-		echo "Instalando o Docker..."
-		choco install docker
+		echo "Instalando o MySQL..."
+		choco install mysql
 fi
+
+#para executar comandos no MySQL a partir da linha de comando a estrutura é a seguinte
+# mysql -u USER -pPASSWORD -e "SQL_QUERY"
+# assumindo o usuário e senha padrão root, para criação do banco de dados e o usuário, ficamos com:
+mysql -u root -proot -e "CREATE DATABASE sonar;" >> sqlQueriesResult
+mysql -u root -proot -e "CREATE USER 'sonar' IDENTIFIED BY 'sonar';" >> sqlQueriesResult
+mysql -u root -proot -e "GRANT ALL ON sonar.* TO 'sonar'@'%' IDENTIFIED BY 'sonar';" >> sqlQueriesResult
+mysql -u root -proot -e "GRANT ALL ON sonar.* TO 'sonar'@'localhost' IDENTIFIED BY 'sonar';" >> sqlQueriesResult
+mysql -u root -proot -e "FLUSH PRIVILEGES;" >> sqlQueriesResult
 
 echo "Instalação Concluida"
